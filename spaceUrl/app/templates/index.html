@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-gray-800 p-6 rounded-lg shadow-xl border border-gray-700">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold text-purple-400">Interface de gestion</h2>
+
+        <div class="flex gap-3">
+            <button
+                class="flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors duration-200"
+                onclick="document.getElementById('addFileByUrl').classList.remove('hidden')">
+                <i class="fas fa-plus w-5 h-5 pt-0.5"></i>
+                Ajouter
+            </button>
+
+            <button class="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-200"
+                onclick="deleteAllFiles()">
+                <i class="fas fa-trash-alt w-5 h-5 pt-0.5"></i>
+                Tout supprimer
+            </button>
+
+            <a type="button" href="/"
+                class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-200"
+                onclick="">
+                <i class="fas fa-sync-alt w-5 h-5 pt-0.5"></i>Actualiser
+            </a>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto relative">
+        <table class="w-full text-sm text-left text-gray-300">
+            <thead class="text-xs uppercase bg-gray-700">
+                <tr>
+                    <th scope="col" class="py-3 px-6">ID</th>
+                    <th scope="col" class="py-3 px-6">Nom</th>
+                    <th scope="col" class="py-3 px-6">URL</th>
+                    <th scope="col" class="py-3 px-6">Date de création</th>
+                    <th scope="col" class="py-3 px-6">Voir</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in files %}
+                <tr class="border-b bg-gray-700 border-gray-600 hover:bg-gray-600">
+                    <td class="py-4 px-6">{{ item.id }}</td>
+                    <td class="py-4 px-6">{{ item.original_filename }}</td>
+                    <td class="py-4 px-6">
+                        <a href="{{ item.url }}" class="text-purple-400 hover:underline" target="_blank">
+                            {{ item.url }}
+                        </a>
+                    </td>
+                    <td class="py-4 px-6">{{ item.creation_date | format_date }}</td>
+                    <td class="py-4 px-6">
+                        <div class="flex justify-center gap-2">
+                            <a type="button" href="/file/{{ item.id }}"
+                                class="p-1.5 hover:cursor-pointer bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors duration-200"
+                                title="Voir"><i class="fas fa-eye w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="addFileByUrl" class="hidden fixed inset-0 bg-black opacity-90 flex items-center justify-center z-50">
+    <div class="bg-gray-800 p-6 rounded-lg shadow-xl border border-gray-700 w-full max-w-md mx-4"
+        onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold text-purple-400">Ajouter une URL</h3>
+            <button onclick="document.getElementById('addFileByUrl').classList.add('hidden')"
+                class="text-gray-400 hover:text-gray-200">
+                <i class="fas fa-times w-6 h-6 flex items-center justify-center"></i>
+            </button>
+        </div>
+
+        <div class="space-y-4">
+            <div>
+                <label for="url" class="block text-sm font-medium text-gray-300 mb-1">URL du fichier</label>
+                <input type="url" id="urlInput" name="url" required placeholder="https://example.com"
+                    class="w-full px-4 py-2 rounded bg-gray-700 border border-gray-600 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+            </div>
+
+            <div>
+                <label for="url" class="block text-sm font-medium text-gray-300 mb-1">Type du fichier</label>
+                <select id="fileTypeSelect" name="url" required
+                    class="w-full px-4 py-2 rounded bg-gray-700 border border-gray-600 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <option value="json">JSON</option>
+                    <option value="csv">CSV</option>
+                </select>
+            </div>
+
+            <div class="flex justify-end gap-3">
+                <button type="button" onclick="document.getElementById('addFileByUrl').classList.add('hidden')"
+                    class="px-4 py-2 rounded bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors duration-200">
+                    Annuler
+                </button>
+                <button type="submit" onclick="uploadFileByUrl()"
+                    class="px-4 py-2 rounded bg-purple-600 text-white hover:bg-purple-700 transition-colors duration-200">
+                    Ajouter
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('addFileByUrl').addEventListener('click', function (e) {
+        if (e.target === this) this.classList.add('hidden');
+    });
+</script>
+{% endblock %}

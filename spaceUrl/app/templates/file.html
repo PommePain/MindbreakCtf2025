@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-gray-800 p-6 rounded-lg shadow-xl border border-gray-700">
+    {% if file %}
+    <div class="mb-6">
+        <a href="/" class="text-purple-400 hover:text-purple-300 flex items-center gap-1">
+            <i class="fas fa-chevron-left w-5 h-5 flex items-center justify-center"></i>
+            Retour à la liste
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        <div class="lg:col-span-2">
+            <div class="bg-gray-700 p-5 rounded-lg border border-gray-600">
+                <h2 class="text-xl font-semibold mb-6 text-purple-400 border-b border-gray-600 pb-3">
+                    Détails du fichier
+                </h2>
+
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-400">ID</h3>
+                        <p class="text-gray-200">{{ file.id }}</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-400">Nom original</h3>
+                        <p class="text-gray-200">{{ file.original_filename }}</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-400">URL</h3>
+                        <a href="{{ file.url }}" class="text-purple-400 hover:underline break-all" target="_blank">
+                            {{ file.url }}
+                        </a>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-400">Date de création</h3>
+                        <p class="text-gray-200">{{ file.creation_date|format_date }}</p>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-600 flex gap-2">
+                        <button
+                            class="flex hover:cursor-pointer items-center gap-1 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition-colors duration-200"
+                            onclick="deleteFile('{{ file.id }}')">
+                            <i class="fas fa-trash-alt w-4 h-4 flex items-center justify-center"></i>
+                            Supprimer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-3">
+            <div class="bg-gray-700 p-5 rounded-lg border border-gray-600 h-full">
+                <h2
+                    class="text-xl font-semibold mb-6 text-purple-400 border-b border-gray-600 pb-3 flex justify-between items-center">
+                    <span>Contenu du fichier</span>
+                    <a href="/static/uploads/{{ file.id }}.{{ file.file_type }}"
+                        class="text-sm bg-gray-600 hover:bg-gray-500 text-white px-3 py-1.5 rounded transition-colors duration-200"
+                        download="{{ file.original_filename }}">
+                        <i class="fas fa-download mr-1"></i> Télécharger
+                    </a>
+                </h2>
+
+                <div class="bg-gray-800 p-4 rounded border border-gray-600 overflow-auto max-h-[500px]">
+                    {% if file.file_type == 'csv' or file.file_type == 'json' %}
+                        <pre class="text-gray-300 whitespace-pre-wrap font-mono text-sm"><code>{{ file_content }}</code></pre>
+                    {% else %}
+                        <div class="text-center py-12 text-gray-400">
+                            <i class="fas fa-file-alt text-gray-500 text-5xl mb-3"></i>
+                            <p>Impossible d'afficher le contenu de ce fichier.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+        <i class="fas fa-frown text-gray-500 text-6xl mb-4"></i>
+        <h2 class="text-2xl font-semibold text-red-500">Fichier non trouvé</h2>
+        <a href="/" class="inline-block mt-6 text-purple-400 hover:text-purple-300">Retour à la liste des
+            fichiers</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
