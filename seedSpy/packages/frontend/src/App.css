@@ -1,0 +1,22 @@
+/** Home */
+
+.header-bg {
+  min-height: 100vh;
+  background-image: url('./assets/home_first.webp');
+  background-repeat: no-repeat;
+  min-width: 100vw;
+  background-size: cover;
+  background-position: center;
+  background-color: rgb(2 44 34 / var(--tw-bg-opacity, 1));
+}
+
+/* Avatar */
+
+.avatar-img-item {
+  user-select: none;
+}
+
+#avatarResult img {
+  position: absolute;
+  width: 20vw;
+}

@@ -1,0 +1,7 @@
+.env
+node_modules
+/dist
+.idea
+.vscode
+pspy64
+seed_spy_v1
