@@ -1,0 +1,22 @@
+services:
+  formatstr:
+    working_dir: /formatstr
+    image: python:3.12
+    container_name: formatstr
+    # build: 
+    #   context: .
+    #   dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:5647:5647"
+    volumes:
+      - .:/formatstr
+    environment:
+      - PORT=5647
+    networks:
+      - formatstr
+    tty: true
+    stdin_open: true
+
+networks:
+  formatstr:
+    driver: bridge

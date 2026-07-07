@@ -1,0 +1,13 @@
+venv
+.gdb_history
+.idea
+cmake-build-debug
+build
+tests
+a.out
+my.py
+test_exp.py
+gotmail_zip_staff
+screens
+image.png
+gotmail_zip
